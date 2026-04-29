@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPTV840 Exam Blueprint</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .chart-view {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .chart-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .chart-item {
+            display: grid;
+            grid-template-columns: 200px 1fr 60px;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+
+        .chart-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .label {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .bar-wrapper {
+            position: relative;
+            height: 32px;
+            background: var(--bg);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .bar-text {
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            z-index: 2;
+        }
+
+        .percentage {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 15px;
+            text-align: right;
+            min-width: 50px;
+        }
+
+        .insight {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(236, 72, 153, 0.08) 100%);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 6px;
+            margin-top: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .insight strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .emphasis {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+            padding: 20px;
+            background: var(--surface);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 3px;
+            height: 20px;
+            border-radius: 2px;
+            background: var(--primary);
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 24px;
+            }
+
+            .chart-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .bar-wrapper {
+                order: 3;
+            }
+
+            .percentage {
+                order: 2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">DPTV840 Exam Blueprint</div>
+            <div class="subtitle">Management of Special Patient Populations | Final Exam Breakdown</div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('topics')">📚 By Content Topics</button>
+            <button class="tab-btn" onclick="switchTab('standards')">🎯 By Clinical Standards</button>
+            <button class="tab-btn" onclick="switchTab('bloom')">🧠 By Cognitive Level</button>
+        </div>
+
+        <!-- By Content Topics -->
+        <div id="topics" class="chart-view active">
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-number">69</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Content Topics</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Questions on Aging</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-item">
+                    <div class="label">Aging Physiology</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 26%;"><span class="bar-text">26%</span></div></div>
+                    <div class="percentage">26%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Cancer</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 17%;"><span class="bar-text">17%</span></div></div>
+                    <div class="percentage">17%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Bone Health</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 16%;"><span class="bar-text">16%</span></div></div>
+                    <div class="percentage">16%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Pelvic Health</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 14%;"><span class="bar-text">14%</span></div></div>
+                    <div class="percentage">14%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Regenerative Medicine</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 11%;"><span class="bar-text">11%</span></div></div>
+                    <div class="percentage">11%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Aging Brain</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 10%;"><span class="bar-text">10%</span></div></div>
+                    <div class="percentage">10%</div>
+                </div>
+            </div>
+
+            <div class="insight">
+                <strong>📌 Study Strategy</strong>
+                <span class="emphasis">Aging Physiology</span> is the dominant topic—focus 26% of your study effort here. Combined with Bone Health and Cancer (17% + 16%), these three topics cover nearly 60% of the exam!
+            </div>
+        </div>
+
+        <!-- By Clinical Standards -->
+        <div id="standards" class="chart-view">
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-number">44%</div>
+                    <div class="stat-label">Foundation Science</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">29%</div>
+                    <div class="stat-label">Evaluation</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">16%</div>
+                    <div class="stat-label">Safety</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-item">
+                    <div class="label">7A: Foundation Science</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 44%;"><span class="bar-text">44%</span></div></div>
+                    <div class="percentage">44%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">7D2: Evaluation</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 29%;"><span class="bar-text">29%</span></div></div>
+                    <div class="percentage">29%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">7D23: Safety</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 16%;"><span class="bar-text">16%</span></div></div>
+                    <div class="percentage">16%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">7D10d: MSK Interventions</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 14%;"><span class="bar-text">14%</span></div></div>
+                    <div class="percentage">14%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">7D10a: CV Interventions</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 7%;"><span class="bar-text">7%</span></div></div>
+                    <div class="percentage">7%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">Other Standards</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 8%;"><span class="bar-text">8%</span></div></div>
+                    <div class="percentage">8%</div>
+                </div>
+            </div>
+
+            <div class="insight">
+                <strong>📌 Study Strategy</strong>
+                Master <span class="emphasis">Foundation Science + Evaluation</span> (73% combined) and you've covered more than three-quarters of the exam. Don't neglect Safety content—16% is a significant portion!
+            </div>
+        </div>
+
+        <!-- By Cognitive Level -->
+        <div id="bloom" class="chart-view">
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-number">69%</div>
+                    <div class="stat-label">Higher Order Thinking</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">36%</div>
+                    <div class="stat-label">Application Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">31%</div>
+                    <div class="stat-label">Recall Questions</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-item">
+                    <div class="label">C3: Application</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 36%;"><span class="bar-text">36%</span></div></div>
+                    <div class="percentage">36%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">C2: Comprehension</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 33%;"><span class="bar-text">33%</span></div></div>
+                    <div class="percentage">33%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">C4: Analysis</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 14%;"><span class="bar-text">14%</span></div></div>
+                    <div class="percentage">14%</div>
+                </div>
+                <div class="chart-item">
+                    <div class="label">C1: Knowledge/Recall</div>
+                    <div class="bar-wrapper"><div class="bar" style="width: 11%;"><span class="bar-text">11%</span></div></div>
+                    <div class="percentage">11%</div>
+                </div>
+            </div>
+
+            <div class="insight">
+                <strong>📌 Question Type Alert</strong>
+                This is NOT a memorization exam! <span class="emphasis">69% of questions require higher-order thinking</span> (Application + Analysis). Study by working through case studies, practice scenarios, and clinical reasoning questions—not just flashcards.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all views
+            document.querySelectorAll('.chart-view').forEach(el => el.classList.remove('active'));
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected view
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate clicked button
+            event.target.classList.add('active');
+        }
+
+        // Animate bars on load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.bar').forEach((bar, index) => {
+                const finalWidth = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = finalWidth;
+                }, 100 + index * 50);
+            });
+        });
+    </script>
+</body>
+</html>
